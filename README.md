@@ -5,9 +5,13 @@ entregas e trocas da Nestlé S.A. no Brasil.
 
 # Principais Requisitos 
 I - Gerenciamento de Cadastro de Clientes
+
 II - Gerenciamento de pedidos
+
 III - Gerenciamento de Trocas
+
 IV - Acompanhamento de Entregas
+
 V - Acompanhamento da Situação Financeira dos Clientes
 
 # Dependências
