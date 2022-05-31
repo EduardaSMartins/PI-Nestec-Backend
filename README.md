@@ -4,15 +4,15 @@ Nestec é um sistema de gerenciamento de compras baseado no sistema de vendas,
 entregas e trocas da Nestlé S.A. no Brasil.
 
 # Principais Requisitos 
-I - Gerenciamento de Cadastro de Clientes
+- Gerenciamento de Cadastro de Clientes
 
-II - Gerenciamento de pedidos
+- Gerenciamento de pedidos
 
-III - Gerenciamento de Trocas
+- Gerenciamento de Trocas
 
-IV - Acompanhamento de Entregas
+- Acompanhamento de Entregas
 
-V - Acompanhamento da Situação Financeira dos Clientes
+- Acompanhamento da Situação Financeira dos Clientes
 
 # Dependências
 - PHP
