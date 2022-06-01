@@ -1,7 +1,8 @@
 {
+    "Cleinte": true,
     "Cliente": true,
-    "Telefone": true,
+    "Empresa": true,
     "Endereco": true,
     "Produto": true,
-    "Empresa": true
+    "Telefone": true
 }
