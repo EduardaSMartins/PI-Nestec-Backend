@@ -23,7 +23,7 @@ class Municipio extends Model
         'deleted_at'
     ];
 
-    protected function bairros()
+    public function bairros()
     {
         return $this->hasMany(Bairro::class);
     }

@@ -1,9 +1,8 @@
 <?php
 
-namespace Modules\Empresa\Http\Controllers\Traits;
+namespace Modules\Endereco\Http\Traits;
 
 use Modules\Endereco\Entities\Bairro;
-use Modules\Endereco\Http\Controllers\Traits\EnderecoEmpresaTrait;
 
 trait BairroTrait
 {

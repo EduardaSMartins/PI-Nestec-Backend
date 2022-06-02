@@ -31,28 +31,28 @@ class Empresa extends Model
         'deleted_at'
     ];
 
-    protected function cliente()
+    public function cliente()
     {
         return $this->belongsTo(Cliente::class);
     }
 
-    protected function cadastros()
+    public function cadastros()
     {
-        return $this->belongsToMany(Cliente::class, 'cadastros', 'id_cliente', 'id_empresa')
+        return $this->belongsToMany(Cliente::class, 'cadastros', 'id_empresa', 'id_cliente')
             ->whereNull('cadastros.deleted_at')
             ->withTimestamps()
             ->withPivot('status');
     }
 
-    protected function telefone()
+    public function telefone()
     {
         return $this->hasOne(Telefone::class);
     }
 
-    protected function endereco()
+    public function enderecos()
     {
         return $this->belongsToMany(Logradouro::class, 'endereco_empresas', 'id_empresa', 'id_logradouro')
-            ->whereNull('enredereco_empresas.deleted_at')
+            ->whereNull('endereco_empresas.deleted_at')
             ->withTimeStamps()
             ->withPivot('complemento','numero');
     }

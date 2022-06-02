@@ -29,7 +29,7 @@ class Logradouro extends Model
         return $this->belongsTo(Bairro::class, 'id_bairro');
     }
 
-    public function empresa()
+    public function empresas()
     {
         return $this->belongsToMany(Empresa::class, 'endereco_empresas', 'id_logradouro', 'id_empresa')
         ->whereNull('endereco_empresas.deleted_at')
@@ -37,7 +37,7 @@ class Logradouro extends Model
         ->withPivot('complemento','numero');
     }
 
-    protected function cadastros()
+    public function cadastros()
     {
         return $this->belongsToMany(Empresa::class, 'cadastros', 'id_cliente', 'id_empresa')
             ->whereNull('cadastros.deleted_at')

@@ -2,10 +2,7 @@
 
 namespace Modules\Endereco\Http\Traits;
 
-use Modules\Empresa\Entities\Empresa;
 use Modules\Endereco\Entities\Municipio;
-use Modules\Endereco\Http\Controllers\Traits\EnderecoTrait;
-use Modules\Telefone\Http\Controllers\Traits\TelefoneTrait;
 
 trait MunicipioTrait
 {

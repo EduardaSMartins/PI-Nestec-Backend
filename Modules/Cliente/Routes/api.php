@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'cadastro', 'middleware' => ['api']], function () {
+Route::group(['prefix' => 'cadastro'], function () {
     Route::get('/', 'ClienteController@index')->name('cadastro.index');
-    Route::get('/busca/{id}','ClienteController@show')->name('cadastro.find');
     Route::post('/adicionar', 'ClienteController@store')->name('cadastro.post');
+    Route::get('/busca/{id}','ClienteController@show')->name('cadastro.find');
     Route::put('/atualizar/{id}', 'ClienteController@update')->name('cadastro.update');
 });

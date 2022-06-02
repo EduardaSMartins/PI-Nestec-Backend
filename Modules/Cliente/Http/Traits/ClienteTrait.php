@@ -3,8 +3,8 @@
 namespace Modules\Cliente\Http\Traits;
 
 use Modules\Cliente\Entities\Cliente;
-use Modules\Empresa\Http\Controllers\Traits\EmpresaTrait;
-use Modules\Telefone\Http\Controllers\Traits\TelefoneTrait;
+use Modules\Empresa\Http\Traits\EmpresaTrait;
+use Modules\Telefone\Http\Traits\TelefoneTrait;
 
 trait ClienteTrait
 {
@@ -16,7 +16,7 @@ trait ClienteTrait
     {
         $dados_cliente = $dados['cliente'];
         $dados_empresa = $dados['empresa'];
-        $dados_telefone = $dados['telefone'];
+        $dados_telefone = $dados_cliente['telefone'];
 
         $telefone = $this->saveUpdateTelefone($dados_telefone);
         $dados_cliente['id_telefone'] = $telefone->id;
@@ -30,9 +30,7 @@ trait ClienteTrait
         
         $dados_empresa['id_cliente'] = $cliente->id;
         $empresa = $this->saveUpdateEmpresa($dados_empresa);
-
-        $cadastro = ['id_cliente' => $cliente->id, 'id_empresa' => $empresa->id, 'status' => 'pendente'];
-        
+        $cadastro[$empresa->id] = ['status' => 'pendente'];
         $cliente->cadastros()->attach($cadastro);
         return $cliente;
     }

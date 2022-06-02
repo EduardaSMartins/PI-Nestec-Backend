@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id')->unsigned();
             $table->integer('id_cliente')->unsigned()->nullable(true);
             $table->integer('id_telefone')->unsigned()->nullable(true);
-            $table->string('cnpj',15)->nullable(true);
+            $table->string('cnpj',20)->nullable(true);
             $table->string('razao_social', 255)->nullable(true);
             $table->string('nome_fantasia', 255)->nullable(true);
             $table->string('ramo_atividade', 255)->nullable(true);

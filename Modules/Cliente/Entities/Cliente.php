@@ -33,17 +33,17 @@ class Cliente extends Model
 
     protected $table = 'clientes';
 
-    protected function empresas()
+    public function empresas()
     {
         return $this->hasMany(Empresa::class);
     }
 
-    protected function telefone()
+    public function telefone()
     {
         return $this->hasOne(Telefone::class);
     }
 
-    protected function cadastros()
+    public function cadastros()
     {
         return $this->belongsToMany(Empresa::class, 'cadastros', 'id_cliente', 'id_empresa')
             ->whereNull('cadastros.deleted_at')

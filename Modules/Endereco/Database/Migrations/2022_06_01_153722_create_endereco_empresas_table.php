@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('id_empresa')->unsigned()->nullable(false);
             $table->integer('id_logradouro')->unsigned()->nullable(false);
             $table->string('complemento', 255)->nullable(true);
-            $table->string('numero')->nullable(true)->default(null);
+            $table->string('numero', 10)->nullable(true)->default(null);
 
             $table->foreign('id_empresa')->references('id')->on('empresas')->onDelete('cascade');
             $table->foreign('id_logradouro')->references('id')->on('logradouros')->onDelete('cascade');
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('enderecos_empresas');
+        Schema::dropIfExists('endereco_empresas');
     }
 };

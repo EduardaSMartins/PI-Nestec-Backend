@@ -3,30 +3,39 @@
 namespace Modules\Endereco\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
+use Modules\Endereco\Entities\Bairro;
+use Modules\Endereco\Entities\Municipio;
 
 class EnderecoResource extends JsonResource
 {
 
     public function toArray($request)
     {
+
+        $bairro = Bairro::findOrFail($this->id_bairro);
+        $municipio = Municipio::findOrFail($bairro->id_municipio);
+
         return [
             'endereco' => [
-                'end_complemento' => $this->end_complemento,
-                'end_numero' => $this->end_numero,
-                'end_tipo' => $this->end_tipo,
-                'status' => $this->status
+                'complemento' => $this->whenPivotLoaded('endereco_empresas', function () {
+                    return $this->pivot->complemento;
+                }),
+                'numero' => $this->whenPivotLoaded('endereco_empresas', function () {
+                    return $this->pivot->numero;
+                }),
             ],
             'logradouro' => [
-                'log_descricao' => $this->log_descricao,
-                'log_cep' => $this->log_cep
+                'descricao' => $this->descricao,
+                'cep' => $this->cep
             ],
             'bairro' => [
-                'bai_nome' => $this->bairro->bai_nome
+                'nome' => $bairro->nome
             ],
             'municipio' => [
-                'mun_nome' => $this->bairro->municipio->mun_nome,
-                'mun_uf' => $this->bairro->municipio->mun_uf,
-                'mun_cod_ibge' => $this->bairro->municipio->mun_cod_ibge,
+                'nome' => $municipio->nome,
+                'uf' => $municipio->uf,
+                'cod_ibge' => $municipio->cod_ibge,
             ]
         ];
     }

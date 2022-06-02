@@ -3,6 +3,7 @@
 namespace Modules\Cliente\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Telefone\Entities\Telefone;
 use Modules\Telefone\Transformers\TelefoneResource;
 
 class ClienteResource extends JsonResource
@@ -10,6 +11,7 @@ class ClienteResource extends JsonResource
 
     public function toArray($request)
     {
+        $telefone = Telefone::findOrFail($this->id_telefone);
 
         return [
             'id' => $this->id,
@@ -21,7 +23,7 @@ class ClienteResource extends JsonResource
             'sobrenome' => $this->sobrenome,
             'email' => $this->email,
             'data_nascimento' => $this->data_nascimento,
-            'telefone' => new TelefoneResource($this->telefone)
+            'telefone' => new TelefoneResource($telefone)
         ];
     }
 }
