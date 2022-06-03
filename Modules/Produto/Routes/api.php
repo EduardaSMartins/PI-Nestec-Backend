@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/produto', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'categoria'], function () {
+    Route::get('/', 'CategoriaController@index')->name('categoria.index');
+    Route::get('/mixin','CategoriaController@mixin')->name('categoria.mixin');
+    Route::post('/adicionar', 'CategoriaController@store')->name('categoria.post');
+});
+
+Route::group(['prefix' => 'produto'], function () {
+    Route::get('/', 'ProdutoController@index')->name('produto.index');
+    Route::post('/adicionar', 'ProdutoController@store')->name('produto.post');
+    Route::get('/buscar/{id}','ProdutoController@show')->name('produto.find');
+    Route::put('/atualizar/{id}', 'ProdutoController@update')->name('produto.update');
 });

@@ -12,7 +12,6 @@ class EnderecoResource extends JsonResource
 
     public function toArray($request)
     {
-
         $bairro = Bairro::findOrFail($this->id_bairro);
         $municipio = Municipio::findOrFail($bairro->id_municipio);
 

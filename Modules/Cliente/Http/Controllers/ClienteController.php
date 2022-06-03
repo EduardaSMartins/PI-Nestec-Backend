@@ -6,8 +6,11 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Modules\Cliente\Http\Traits\ClienteTrait;
+use Modules\Cliente\Entities\Cliente;
 use Modules\Cliente\Http\Requests\CadastroRequest;
+use Modules\Cliente\Http\Traits\ClienteTrait;
+use Modules\Cliente\Services\ClienteService;
+use Modules\Cliente\Transformers\ClienteResource;
 use Modules\Empresa\Transformers\CadastroResource;
 
 class ClienteController extends Controller
@@ -21,7 +24,8 @@ class ClienteController extends Controller
     public function index()
     {
         // Verificar se deseja listar os clientes com cadastro aprovado ou pendentes
-        
+        $clientes = ClienteService::findClientes();
+        return response()->json($clientes, 200);
     }
 
     /**
@@ -31,15 +35,13 @@ class ClienteController extends Controller
      */
     public function store(CadastroRequest $request)
     {
-        dd('oi');
         $dados_cadastro = $request->input('cadastro');
         DB::beginTransaction();
 
         $cadastro = $this->saveUpdateCliente($dados_cadastro);
-
+        
         DB::commit();
-        return response()->json($cadastro, 200);
-        // return response()->json(new CadastroResource($cadastro), 200);
+        return response()->json(new ClienteResource($cadastro), 200);
     }
 
     /**
@@ -64,12 +66,11 @@ class ClienteController extends Controller
      */
     public function update(CadastroRequest $request, $id)
     {
-        dd('ClienteController - update');
         $dados_cadastro = $request->input('cadastro');
         DB::beginTransaction();
 
         $cadastro = $this->saveUpdateCliente($dados_cadastro, $id);
         DB::commit();
-        return response()->json(new CadastroResource($cadastro), 200);
+        return response()->json(new ClienteResource($cadastro), 200);
     }
 }

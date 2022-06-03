@@ -6,14 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CadastroRequest extends FormRequest
 {
-
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
-        /**
-         * Get the validation rules that apply to the request.
-         *
-         * @return array
-         */
         return [
             'cadastro' => 'required',
             'cadastro.cliente' => 'required',
@@ -24,57 +23,53 @@ class CadastroRequest extends FormRequest
             'cadastro.cliente.nome' => 'required',
             'cadastro.cliente.sobrenome' => 'required',
             'cadastro.cliente.email' => 'sometimes',
-            'cadastro.cliente.data_nascimento' => 'required',
-
+            'cadastro.cliente.data_nascimento' => 'sometimes',
+            
             'cadastro.cliente.telefone' => 'present',
-            'cadastro.cliente.telefone.numero' => 'sometimes',
+            'cadastro.cliente.telefone.numero' => 'required',
             'cadastro.cliente.telefone.tipo' => ['sometimes', 'in:celular,fixo'],
             'cadastro.cliente.telefone.observacao' => 'sometimes',
 
             'cadastro.empresa' => 'present',
-            'cadastro.empresa.cnpj' => 'sometimes',
-            'cadastro.empresa.razao_social' => 'sometimes',
+            'cadastro.empresa.cnpj' => 'required',
+            'cadastro.empresa.razao_social' => 'required',
             'cadastro.empresa.nome_fantasia' => 'sometimes',
-            'cadastro.empresa.ramo_atividade' => 'sometimes',
+            'cadastro.empresa.ramo_atividade' => 'required',
             'cadastro.empresa.email' => 'sometimes',
             'cadastro.empresa.porte' => ['sometimes', 'in:micro,pequena,media,grande'],
-
+            
             'cadastro.empresa.telefone' => 'present',
-            'cadastro.empresa.telefone.nome' => 'sometimes',
+            'cadastro.empresa.telefone.numero' => 'required',
             'cadastro.empresa.telefone.tipo' => ['sometimes', 'in:celular,fixo'],
             'cadastro.empresa.telefone.observacao' => 'sometimes',
 
-            'cadastro.empresa.endereco.' => 'present',
-            'cadastro.empresa.endereco.endereco' => 'present',
-            'cadastro.empresa.endereco.endereco.complemento' => 'sometimes',
-            'cadastro.empresa.endereco.endereco.numero' => 'sometimes',
-
-            'cadastro.empresa.endereco.logradouro' => 'sometimes',
-            'cadastro.empresa.endereco.logradouro.descricao' => 'sometimes',
-            'cadastro.empresa.endereco.logradouro.cep' => 'sometimes',
-
-            'cadastro.empresa.endereco.bairro' => 'present',
-            'cadastro.empresa.endereco.bairro.nome' => 'sometimes',
-
-            'cadastro.empresa.endereco.municipio' => 'present',
-            'cadastro.empresa.endereco.municipio.mun_nome' => 'sometimes',
-            'cadastro.empresa.endereco.municipio.mun_uf' => 'sometimes',
-            'cadastro.empresa.endereco.municipio.mun_cod_ibge' => 'sometimes',
+            'cadastro.empresa.enderecos' => 'present',
+            'cadastro.empresa.enderecos.*.endereco' => 'present',
+            'cadastro.empresa.enderecos.*.endereco.complemento' => 'sometimes',
+            'cadastro.empresa.enderecos.*.endereco.numero' => 'sometimes',
+            
+            'cadastro.empresa.enderecos.*.logradouro' => 'present',
+            'cadastro.empresa.enderecos.*.logradouro.descricao' => 'sometimes',
+            'cadastro.empresa.enderecos.*.logradouro.cep' => 'required',
+            
+            'cadastro.empresa.enderecos.*.bairro' => 'present',
+            'cadastro.empresa.enderecos.*.bairro.nome' => 'required',
+            
+            'cadastro.empresa.enderecos.*.municipio' => 'present',
+            'cadastro.empresa.enderecos.*.municipio.nome' => 'required',
+            'cadastro.empresa.enderecos.*.municipio.uf' => 'required',
+            'cadastro.empresa.enderecos.*.municipio.cod_ibge' => 'sometimes'
         ];
     }
 
-    /** Message to any type of attribute **/
-    public function messages()
-    {
-        return [
-            'required' => 'O campo :attribute é obrigatório',
-            'present' => 'O campo :attibute deve estar presente'
-        ];
-    }
-
-    /** Determine if the user is authorized to make this request. **/
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
     public function authorize()
     {
         return true;
     }
 }
+ 

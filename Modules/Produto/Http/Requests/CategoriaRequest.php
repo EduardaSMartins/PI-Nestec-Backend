@@ -4,7 +4,7 @@ namespace Modules\Produto\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Categoria extends FormRequest
+class CategoriaRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,11 @@ class Categoria extends FormRequest
     public function rules()
     {
         return [
-            //
+            'categoria' => 'required',
+            'categoria.nome' => 'required',
+            'categoria.descricao' => 'sometimes',
+            'categoria.sigla' => 'sometimes',
+            'categoria.cor' => 'sometimes'
         ];
     }
 
@@ -26,5 +30,12 @@ class Categoria extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => 'O :attribute deve ser informado'
+        ];
     }
 }

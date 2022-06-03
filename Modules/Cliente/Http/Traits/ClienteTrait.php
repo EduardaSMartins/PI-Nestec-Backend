@@ -32,6 +32,7 @@ trait ClienteTrait
         $empresa = $this->saveUpdateEmpresa($dados_empresa);
         $cadastro[$empresa->id] = ['status' => 'pendente'];
         $cliente->cadastros()->attach($cadastro);
+        
         return $cliente;
     }
 }

@@ -9,10 +9,29 @@ class Produto extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
+    protected $fillable = [
+        'id_categoria',
+        'nome',
+        'descricao',
+        'codigo_barras',
+        'codigo_interno',
+        'sabor',
+        'cor',
+        'tamanho',
+        'quantidade_minima',
+        'quantidade_caixa',
+        'quantidade_estoque',
+        'valor_unitario'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
+    public function categoria()
     {
-        return \Modules\Produto\Database\factories\ProdutoFactory::new();
+        return $this->belongsTo(Categoria::class);
     }
 }

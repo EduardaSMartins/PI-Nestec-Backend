@@ -5,25 +5,24 @@ namespace Modules\Produto\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Modules\Produto\Entities\Produto;
+use Modules\Produto\Http\Requests\ProdutoRequest;
+use Modules\Produto\Http\Traits\ProdutoTrait;
+use Modules\Produto\Transformers\ProdutoResource;
 
 class ProdutoController extends Controller
 {
+    use ProdutoTrait;
+
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index()
     {
-        return view('produto::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('produto::create');
+        $produtos = Produto::where('quantidade_estoque','>', 0)->get();
+        return response()->json(ProdutoResource::collection($produtos));
     }
 
     /**
@@ -31,9 +30,15 @@ class ProdutoController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(ProdutoRequest $request)
     {
-        //
+        $dados_produto = $request->input('produto');
+        DB::beginTransaction();
+
+        $produto = $this->saveProduto($dados_produto);
+
+        DB::commit();
+        return response()->json(new ProdutoResource($produto), 200);        
     }
 
     /**
@@ -43,17 +48,8 @@ class ProdutoController extends Controller
      */
     public function show($id)
     {
-        return view('produto::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('produto::edit');
+        $produto = Produto::findOrFail($id);
+        return response()->json(new ProdutoResource($produto), 200);
     }
 
     /**
@@ -62,18 +58,14 @@ class ProdutoController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(ProdutoRequest $request, $id)
     {
-        //
-    }
+        $dados_produto = $request->input('produto');
+        DB::beginTransaction();
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        $produto = $this->updateProduto($dados_produto, $id);
+
+        DB::commit();
+        return response()->json(new ProdutoResource($produto), 200);
     }
 }

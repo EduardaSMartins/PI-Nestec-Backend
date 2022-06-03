@@ -14,9 +14,13 @@ class EmpresaResource extends JsonResource
 
     public function toArray($request)
     {
-        $telefone = Telefone::findOrFail($this->id_telefone);
+        if(isset($this->id_telefone)){
+            $telefone = Telefone::findOrFail($this->id_telefone);
+            new TelefoneResource($telefone);
+        }else
+            $telefone = [];
 
-        return [
+            return [
             'id' => $this->id,
             'cnpj' => $this->cnpj,
             'razao_social' => $this->razao_social,
@@ -24,7 +28,7 @@ class EmpresaResource extends JsonResource
             'ramo_atividade' => $this->ramo_atividade,
             'email' => $this->email,
             'porte' => $this->porte,
-            'telefone' => new TelefoneResource($telefone),
+            'telefone' => $telefone,
             'endereco' => EnderecoResource::collection($this->enderecos)
         ];
     }

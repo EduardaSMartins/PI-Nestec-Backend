@@ -12,14 +12,14 @@ class CadastroResource extends JsonResource
 
     public function toArray($request)
     {
-        $cliente = Cliente::findOrFail($this->id_cliente);
-        $empresa = Empresa::findOrFail($this->id_empresa);
+        $cliente = Cliente::findOrFail($this->id);
+        $empresa = Empresa::where('id_cliente',$cliente->id)->first();
 
         return [
-            'id' => $this->id,
+            // 'id' => $this->id,
             'cliente'=> new ClienteResource($cliente),
             'empresa' => new EmpresaResource($empresa),
-            'status' => $this->status
+            // 'status' => $this->status
         ];
     }
 }

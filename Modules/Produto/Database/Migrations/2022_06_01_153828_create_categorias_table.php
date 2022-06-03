@@ -14,9 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('categorias', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id')->unsigned();
+            $table->string('nome', 255)->nullable(true);
+            $table->string('descricao', 255)->nullable(true);
+            $table->string('sigla', 5)->nullable(true);
+            $table->string('cor', 15)->nullable(true);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

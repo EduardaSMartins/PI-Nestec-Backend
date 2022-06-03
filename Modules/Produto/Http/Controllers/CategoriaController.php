@@ -5,9 +5,16 @@ namespace Modules\Produto\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Modules\Produto\Entities\Categoria;
+use Modules\Produto\Http\Requests\CategoriaRequest;
+use Modules\Produto\Http\Traits\CategoriaTrait;
+use Modules\Produto\Transformers\CategoriaResource;
 
 class CategoriaController extends Controller
 {
+    use CategoriaTrait;
+
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -17,13 +24,11 @@ class CategoriaController extends Controller
         return view('produto::index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
+    public function mixin()
     {
-        return view('produto::create');
+        $categorias = Categoria::all();
+        $mixin = ['categorias' => $categorias];
+        return response()->json($mixin, 200);
     }
 
     /**
@@ -31,49 +36,14 @@ class CategoriaController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(CategoriaRequest $request)
     {
-        //
-    }
+        $dados_categoria = $request->input('categoria');
+        DB::beginTransaction();
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('produto::show');
-    }
+        $categoria = $this->saveCategoria($dados_categoria);
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('produto::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        DB::commit();
+        return response()->json(new CategoriaResource($categoria), 200);
     }
 }
