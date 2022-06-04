@@ -11,6 +11,7 @@ use Modules\Cliente\Http\Requests\CadastroRequest;
 use Modules\Cliente\Http\Traits\ClienteTrait;
 use Modules\Cliente\Services\ClienteService;
 use Modules\Cliente\Transformers\ClienteResource;
+use Modules\Empresa\Transformers\CadastroFindResource;
 use Modules\Empresa\Transformers\CadastroResource;
 
 class ClienteController extends Controller
@@ -35,13 +36,13 @@ class ClienteController extends Controller
      */
     public function store(CadastroRequest $request)
     {
-        $dados_cadastro = $request->input('cadastro');
+        $dados_cadastro = $request->input();
         DB::beginTransaction();
 
         $cadastro = $this->saveUpdateCliente($dados_cadastro);
         
         DB::commit();
-        return response()->json(new ClienteResource($cadastro), 200);
+        return response()->json(new CadastroResource($cadastro), 200);
     }
 
     /**
@@ -55,7 +56,7 @@ class ClienteController extends Controller
             ->where('id', $id)
             ->first();
 
-        return response()->json(new CadastroResource($cadastro), 200);
+        return response()->json(new CadastroFindResource($cadastro), 200);
     }
 
     /**
@@ -66,11 +67,12 @@ class ClienteController extends Controller
      */
     public function update(CadastroRequest $request, $id)
     {
-        $dados_cadastro = $request->input('cadastro');
+        $dados_cadastro = $request->input();
         DB::beginTransaction();
 
-        $cadastro = $this->saveUpdateCliente($dados_cadastro, $id);
+        $cadastro = $this->saveUpdateCliente($dados_cadastro, $dados_cadastro['cliente']['id']);
+        
         DB::commit();
-        return response()->json(new ClienteResource($cadastro), 200);
+        return response()->json(new CadastroResource($cadastro), 200);
     }
 }

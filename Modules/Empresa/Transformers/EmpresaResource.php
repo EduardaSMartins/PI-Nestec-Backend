@@ -16,7 +16,7 @@ class EmpresaResource extends JsonResource
     {
         if(isset($this->id_telefone)){
             $telefone = Telefone::findOrFail($this->id_telefone);
-            new TelefoneResource($telefone);
+            $telefone = new TelefoneResource($telefone);
         }else
             $telefone = [];
 
@@ -29,7 +29,7 @@ class EmpresaResource extends JsonResource
             'email' => $this->email,
             'porte' => $this->porte,
             'telefone' => $telefone,
-            'endereco' => EnderecoResource::collection($this->enderecos)
+            'enderecos' => EnderecoResource::collection($this->enderecos)
         ];
     }
 }

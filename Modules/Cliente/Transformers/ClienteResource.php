@@ -16,13 +16,13 @@ class ClienteResource extends JsonResource
     public function toArray($request)
     {
         $telefone = Telefone::findOrFail($this->id_telefone);
-        $empresa = Empresa::where('id_cliente',$this->id)->first();
-
-        $cadastro = DB::table('cadastros')
-        ->where('id_cliente',$this->id)
-        ->where('id_empresa',$empresa->id)
-        ->first();
-
+        // $empresa = Empresa::where('id_cliente',$this->id)->first();
+        // dd($empresa);
+        // $cadastro = DB::table('cadastros')
+        // ->where('id_cliente',$this->id)
+        // ->where('id_empresa',$empresa->id)
+        // ->first();
+        
         return [
             'id' => $this->id,
             'cpf' => $this->cpf,
@@ -34,8 +34,7 @@ class ClienteResource extends JsonResource
             'email' => $this->email,
             'data_nascimento' => $this->data_nascimento,
             'telefone' => new TelefoneResource($telefone),
-            'empresa' => new EmpresaResource($empresa),
-            'status_cadastro' => $cadastro->status
+            // 'status_cadastro' => $cadastro->status
         ];
     }
 }

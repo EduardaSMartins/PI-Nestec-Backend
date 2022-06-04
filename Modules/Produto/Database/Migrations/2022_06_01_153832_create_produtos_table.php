@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('produtos', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->integer('id_categoria')->nullable(false);
+            $table->integer('id_categoria')->unsigned()->nullable(false);
             $table->string('nome', 255)->nullable(false);
             $table->string('descricao', 255)->nullable(true);
             $table->string('codigo_barras', 50)->nullable(false);

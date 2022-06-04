@@ -13,7 +13,11 @@ trait ProdutoTrait
 
     public function saveProduto($dados)
     {
-        $produto = Produto::create($dados);
+        $produto = Produto::where('codigo_interno',$dados['codigo_interno'])->first();
+        
+        is_null($produto)
+            ? $produto = Produto::create($dados)
+            : $produto = $this->updateProduto($produto,$produto->id);
         return $produto;
     }
 

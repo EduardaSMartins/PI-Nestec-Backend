@@ -2,6 +2,7 @@
 
 namespace Modules\Empresa\Http\Traits;
 
+use App\Http\Traits\softDeleteTrait;
 use Modules\Empresa\Entities\Empresa;
 use Modules\Endereco\Http\Traits\LogradouroTrait;
 use Modules\Endereco\Http\Traits\MunicipioTrait;
@@ -14,6 +15,7 @@ trait EmpresaTrait
     use MunicipioTrait;
     use BairroTrait;
     use LogradouroTrait;
+    use softDeleteTrait;
 
     //Cria nova empresa
     public function saveUpdateEmpresa($dados, $id = null)
@@ -25,7 +27,8 @@ trait EmpresaTrait
             $empresa = Empresa::create($dados);
         } else {
             $empresa = Empresa::findOrFail($id);
-            $empresa->telefone()->delete();
+            $this->saveUpdateTelefone($dados_telefone,$dados_telefone['id']);
+            $this->softDeleteMany('enderecos', $empresa);
         }
 
         $telefone = $this->saveUpdateTelefone($dados_telefone);
