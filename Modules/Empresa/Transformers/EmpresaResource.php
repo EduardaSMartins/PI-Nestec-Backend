@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Cliente\Transformers\ClienteResource;
 use Modules\Empresa\Entities\Empresa;
 use Modules\Endereco\Transformers\EnderecoResource;
+use Modules\Pedido\Transformers\PedidoIndexResource;
 use Modules\Telefone\Entities\Telefone;
 use Modules\Telefone\Transformers\TelefoneResource;
 
@@ -14,13 +15,13 @@ class EmpresaResource extends JsonResource
 
     public function toArray($request)
     {
-        if(isset($this->id_telefone)){
+        if (isset($this->id_telefone)) {
             $telefone = Telefone::findOrFail($this->id_telefone);
             $telefone = new TelefoneResource($telefone);
-        }else
+        } else
             $telefone = [];
 
-            return [
+        return [
             'id' => $this->id,
             'cnpj' => $this->cnpj,
             'razao_social' => $this->razao_social,

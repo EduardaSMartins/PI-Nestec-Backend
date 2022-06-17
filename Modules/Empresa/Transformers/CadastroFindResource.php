@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Cliente\Entities\Cliente;
 use Modules\Cliente\Transformers\ClienteResource;
 use Modules\Empresa\Entities\Empresa;
+use Modules\Pedido\Transformers\PedidoIndexResource;
 
 class CadastroFindResource extends JsonResource
 {
@@ -30,7 +31,8 @@ class CadastroFindResource extends JsonResource
             'id' => $this->id,
             'cliente' => new ClienteResource($cliente),
             'empresa' => new EmpresaResource($empresa),
-            'status' => $this->status
+            'status' => $this->status,
+            'pedidos' => PedidoIndexResource::collection($this->pedidos)
         ];
     }
 }

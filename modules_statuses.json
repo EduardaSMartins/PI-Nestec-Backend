@@ -4,5 +4,9 @@
     "Empresa": true,
     "Endereco": true,
     "Produto": true,
-    "Telefone": true
+    "Telefone": true,
+    "Pedido": true,
+    "Conta": true,
+    "Troca": true,
+    "Entrega": true
 }

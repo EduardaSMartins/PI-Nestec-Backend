@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Produto\Entities\Produto;
 use Modules\Produto\Http\Requests\ProdutoRequest;
 use Modules\Produto\Http\Traits\ProdutoTrait;
+use Modules\Produto\Services\ProdutoService;
 use Modules\Produto\Transformers\ProdutoResource;
 
 class ProdutoController extends Controller
@@ -21,8 +22,12 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        $produtos = Produto::where('quantidade_estoque','>', 0)->get();
-        return response()->json(ProdutoResource::collection($produtos));
+        // Usar o ProdutoService pra fazer paginate - testar a listagem
+        
+        // $produtos = Produto::where('quantidade_estoque','>', 0)->get();
+        // return response()->json(ProdutoResource::collection($produtos));
+        $produtos = ProdutoService::findProduto();
+        return response()->json($produtos, 200);    
     }
 
     /**

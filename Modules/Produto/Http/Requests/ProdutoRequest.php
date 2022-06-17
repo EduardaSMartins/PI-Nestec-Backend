@@ -24,7 +24,7 @@ class ProdutoRequest extends FormRequest
             'produto.cor' => 'sometimes',
             'produto.tamanho' => 'sometimes',
             'produto.quantidade_minima' => 'required',
-            'produto.quantidade_caixa' => 'required',
+            'produto.quantidade_caixa' => 'sometimes',
             'produto.quantidade_estoque' => 'required',
             'produto.valor_unitario' => 'required'
         ];

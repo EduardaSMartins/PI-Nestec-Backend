@@ -40,7 +40,7 @@ class ClienteController extends Controller
         DB::beginTransaction();
 
         $cadastro = $this->saveUpdateCliente($dados_cadastro);
-        
+
         DB::commit();
         return response()->json(new CadastroResource($cadastro), 200);
     }
@@ -71,7 +71,7 @@ class ClienteController extends Controller
         DB::beginTransaction();
 
         $cadastro = $this->saveUpdateCliente($dados_cadastro, $dados_cadastro['cliente']['id']);
-        
+
         DB::commit();
         return response()->json(new CadastroResource($cadastro), 200);
     }
