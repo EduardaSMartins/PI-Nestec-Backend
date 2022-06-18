@@ -32,10 +32,10 @@ class Pedido extends Model
     //     return $this->belongsTo(Entrega::class);
     // }
 
-    // protected function conta()
-    // {
-    //     return $this->belongsTo(Conta::class);
-    // }
+    public function conta()
+    {
+        return $this->belongsTo(Conta::class);
+    }
 
     public function empresa()
     {
