@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Cliente\Entities\Cliente;
 use Modules\Endereco\Entities\Logradouro;
+use Modules\Pedido\Entities\Pedido;
 use Modules\Telefone\Entities\Telefone;
 
 class Empresa extends Model
@@ -34,6 +35,11 @@ class Empresa extends Model
     public function cliente()
     {
         return $this->belongsTo(Cliente::class);
+    }
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class);
     }
 
     public function cadastros()

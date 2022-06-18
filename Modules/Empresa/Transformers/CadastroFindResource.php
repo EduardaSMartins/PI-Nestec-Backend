@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Cliente\Entities\Cliente;
 use Modules\Cliente\Transformers\ClienteResource;
 use Modules\Empresa\Entities\Empresa;
+use Modules\Pedido\Entities\Pedido;
 use Modules\Pedido\Transformers\PedidoIndexResource;
 
 class CadastroFindResource extends JsonResource
@@ -21,18 +22,14 @@ class CadastroFindResource extends JsonResource
     {
         $cliente = Cliente::findOrFail($this->id_cliente);
         $empresa = Empresa::findOrFail($this->id_empresa);
-
-        // $cadastro = DB::table('cadastros')
-        //     ->where('id_cliente', $cliente->id)
-        //     ->where('id_empresa', $empresa->id)
-        //     ->first();
+        $pedidos = Pedido::where('id_empresa', $this->id_empresa)->get();
 
         return [
             'id' => $this->id,
             'cliente' => new ClienteResource($cliente),
             'empresa' => new EmpresaResource($empresa),
             'status' => $this->status,
-            'pedidos' => PedidoIndexResource::collection($this->pedidos)
+            'pedidos' => PedidoIndexResource::collection($pedidos)
         ];
     }
 }

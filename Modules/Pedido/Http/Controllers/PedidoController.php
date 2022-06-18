@@ -85,6 +85,9 @@ class PedidoController extends Controller
         $pedido = Pedido::findOrFail($id);
         if ($pedido->status == 'aguardando') {
             $this->softDeleteMany('items', $pedido);
+            
+            //Excluir items - da tabela Item
+            // foreach($)
             $pedido->delete();
             DB::commit();
 
