@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parelas', function (Blueprint $table) {
+        Schema::create('parcelas', function (Blueprint $table) {
             $table->increments('id')->unsigned()->nullable(false);
             $table->integer('id_conta')->unsigned()->nullable(false);
             $table->date('data_venc')->nullable(false);
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parelas');
+        Schema::dropIfExists('parcelas');
     }
 };

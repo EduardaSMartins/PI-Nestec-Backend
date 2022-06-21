@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/conta', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'conta'], function () {
+    Route::get('/', 'ContaController@index')->name('conta.index');
+    Route::post('/adicionar/{id}', 'ContaController@store')->name('conta.post'); // o id é da empresa
+    Route::get('/buscaConta/{id}','ContaController@showConta')->name('conta.find');
+    Route::get('/buscaParcela/{id}','ContaController@showParcela')->name('parcela.find');
+    Route::put('/atualizarConta/{id}', 'ContaController@updateConta')->name('conta.update');
+    Route::put('/atualizarParcela/{id}', 'ContaController@updateParcela')->name('parcela.update');
+    Route::delete('/remover/{id}', 'ContaController@destroy')->name('conta.delete');
 });

@@ -2,28 +2,34 @@
 
 namespace Modules\Conta\Http\Controllers;
 
+use App\Http\Traits\softDeleteTrait;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Modules\Conta\Entities\Conta;
+use Modules\Conta\Entities\Parcela;
+use Modules\Conta\Http\Requests\ContaRequest;
+use Modules\Conta\Http\Requests\ParcelaRequest;
+use Modules\Conta\Http\Traits\ContaTrait;
+use Modules\Conta\Http\Traits\ParcelaTrait;
+use Modules\Conta\Transformers\ContaResource;
+use Modules\Conta\Transformers\ParcelaResource;
 
 class ContaController extends Controller
 {
+    use ContaTrait;
+    use ParcelaTrait;
+    use softDeleteTrait;
+
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index()
     {
-        return view('conta::index');
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('conta::create');
+        return view('conta::index');
     }
 
     /**
@@ -31,9 +37,16 @@ class ContaController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(ContaRequest $request, $id)
     {
-        //
+        $dados_conta = $request->input('conta');
+        DB::beginTransaction();
+        $situacaoFinanceira = $this->situacaoFinanceira($dados_conta['id_pedido']);
+        if(!is_null($situacaoFinanceira))
+            $dados_conta['quantidade_parcelas'] = 1;
+        $conta = $this->saveUpdateConta($dados_conta);
+        DB::commit();
+        return response()->json(new ContaResource($conta), 200);
     }
 
     /**
@@ -41,19 +54,21 @@ class ContaController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show($id)
+    public function showConta($id)
     {
-        return view('conta::show');
+        $conta = Conta::findOrFail($id);
+        return response()->json(new ContaResource($conta), 200);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the specified resource.
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
+    public function showParcela($id)
     {
-        return view('conta::edit');
+        $parcela = Parcela::findOrFail($id);
+        return response()->json(new ParcelaResource($parcela), 200);
     }
 
     /**
@@ -62,9 +77,22 @@ class ContaController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function updateConta(ContaRequest $request, $id)
     {
-        //
+        $dados_conta = $request->input('conta');
+        DB::beginTransaction();
+        $conta = $this->saveUpdateConta($dados_conta, $id);
+        DB::commit();
+        return response()->json(new ContaResource($conta), 200);
+    }
+
+    public function updateParcela(ParcelaRequest $request, $id)
+    {
+        $dados_parcela = $request->input('parcela');
+        DB::beginTransaction();
+        $parcela = $this->saveUpdateParcela($dados_parcela, $id);
+        DB::commit();
+        return response()->json(new ParcelaResource($parcela), 200);
     }
 
     /**
@@ -74,6 +102,13 @@ class ContaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $conta = Conta::findOrFail($id);
+
+        DB::beginTransaction();
+        $this->softDeleteMany('parcelas', $conta);
+        $conta->delete();
+        DB::commit();
+
+        return response()->json(new ContaResource($conta), 200);
     }
 }
