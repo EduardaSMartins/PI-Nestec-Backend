@@ -20,19 +20,26 @@ trait ClienteTrait
 
         $telefone = $this->saveUpdateTelefone($dados_telefone);
         $dados_cliente['id_telefone'] = $telefone->id;
-        
-        if(is_null($id)){
-            $cliente = Cliente::create($dados_cliente);
-            $dados_empresa['id_cliente'] = $cliente->id;
-            $empresa = $this->saveUpdateEmpresa($dados_empresa);
-            $cadastro[$empresa->id] = ['status' => 'pendente'];
-            $cliente->cadastros()->attach($cadastro);
-        }else{
+
+        if (is_null($id)) {
+            $cliente = Cliente::where('cpf', $dados->cpf)->first();
+            if (is_null($cliente)) {
+                $cliente = Cliente::create($dados_cliente);
+                $dados_empresa['id_cliente'] = $cliente->id;
+                $empresa = $this->saveUpdateEmpresa($dados_empresa);
+                $cadastro[$empresa->id] = ['status' => 'pendente'];
+                $cliente->cadastros()->attach($cadastro);
+            } else {
+                $cliente = Cliente::findOrFail($id);
+                $cliente->update($dados_cliente);
+                $empresa = $this->saveUpdateEmpresa($dados_empresa, $dados_empresa['id']);
+            }
+        } else {
             $cliente = Cliente::findOrFail($id);
             $cliente->update($dados_cliente);
             $empresa = $this->saveUpdateEmpresa($dados_empresa, $dados_empresa['id']);
         }
-            
+
         return $cliente;
     }
 }

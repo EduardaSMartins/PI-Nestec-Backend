@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pedidos', function (Blueprint $table) {
+        Schema::create('trocas', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->integer('id_empresa')->unsigned()->nullable(false);
-            $table->dateTime('data_pedido')->nullable(false);
-            $table->float('valor_final',8,2)->nullable(false)->default('0.00');
-            $table->enum('status', ['aguardando','aprovado','cancelado'])->nullable(false)->default('aguardando');
-            $table->text('observacao')->nullable(true);
+            $table->date('data_solicitacao')->nullable(false);
+            $table->enum('status', ['pendente','aceita','cancelada'])->nullable(false)->default('pendente');
 
             $table->foreign('id_empresa')->references('id')->on('empresas')->onDelete('cascade');
 
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pedidos');
+        Schema::dropIfExists('trocas');
     }
 };

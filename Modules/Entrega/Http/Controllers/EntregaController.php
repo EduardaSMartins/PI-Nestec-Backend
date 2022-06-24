@@ -5,35 +5,25 @@ namespace Modules\Entrega\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Modules\Entrega\Entities\Entrega;
+use Modules\Entrega\Http\Requests\EntregaRequest;
+use Modules\Entrega\Http\Traits\EntregaTrait;
+use Modules\Entrega\Services\EntregaService;
+use Modules\Entrega\Transformers\EntregaResource;
 
 class EntregaController extends Controller
 {
+    use EntregaTrait;
+
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index()
     {
-        return view('entrega::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('entrega::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
-    {
-        //
+        $entregas = EntregaService::findEntregas();
+        return response()->json($entregas, 200);
     }
 
     /**
@@ -43,17 +33,8 @@ class EntregaController extends Controller
      */
     public function show($id)
     {
-        return view('entrega::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('entrega::edit');
+        $entrega = Entrega::findOrFail($id);
+        return response()->json(new EntregaResource($entrega),200);
     }
 
     /**
@@ -62,18 +43,14 @@ class EntregaController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(EntregaRequest $request, $id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        $dados_entrega = $request->input();
+        
+        DB::beginTransaction();
+        $entrega = $this->updateEntrega($dados_entrega, $id);
+        DB::commit();
+        
+        return response()->json(new EntregaResource($entrega), 200);
     }
 }

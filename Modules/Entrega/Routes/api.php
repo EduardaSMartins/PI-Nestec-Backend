@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/entrega', function (Request $request) {
-    return $request->user();
+
+Route::group(['prefix' => 'entrega'], function () {
+    Route::get('/', 'EntregaController@index')->name('entrega.index');
+    Route::get('/busca/{id}','EntregaController@show')->name('entrega.find');
+    Route::put('/atualizar/{id}', 'EntregaController@update')->name('entrega.update');
 });

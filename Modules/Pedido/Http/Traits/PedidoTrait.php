@@ -28,6 +28,11 @@ trait PedidoTrait
 
                 if (now()->lessThanOrEqualTo($sixOClock)) {
                     $pedido = Pedido::findOrFail($id);
+                    foreach($pedido->items as $item){
+
+                        $i = Item::findOrFail($item);
+                    }
+
                     $this->softDeleteMany('items', $pedido);
                 }
             } catch (Exception $e) {

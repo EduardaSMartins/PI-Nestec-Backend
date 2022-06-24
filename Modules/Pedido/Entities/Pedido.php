@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Empresa\Entities\Empresa;
+use Modules\Entrega\Entities\Entrega;
 use Modules\Produto\Entities\Item;
 
 class Pedido extends Model
@@ -31,6 +32,11 @@ class Pedido extends Model
     // {
     //     return $this->belongsTo(Entrega::class);
     // }
+
+    public function entrega()
+    {
+        return $this->hasOne(Entrega::class);
+    }
 
     public function conta()
     {

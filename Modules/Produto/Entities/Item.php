@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Pedido\Entities\Pedido;
+use Modules\Troca\Entities\Troca;
 
 class Item extends Model
 {
@@ -37,10 +38,11 @@ class Item extends Model
             ->withTimeStamps();
     }
 
-    // protected function troca()
-    // {
-    //     return $this->belongsToMany(Troca::class, 'itens_pedido', 'id_item', 'id_troca')
-    //         ->whereNull('itens_troca.deleted_at')
-    //         ->withTimeStamps();
-    // }
+    protected function troca()
+    {
+        return $this->belongsToMany(Troca::class, 'item_trocas', 'id_item', 'id_troca')
+            ->whereNull('item_trocas.deleted_at')
+            ->withTimeStamps();
+    }
+
 }
