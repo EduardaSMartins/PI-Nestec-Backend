@@ -24,13 +24,6 @@ class CategoriaController extends Controller
         return view('produto::index');
     }
 
-    public function mixin()
-    {
-        $categorias = Categoria::all();
-        $mixin = ['categorias' => $categorias];
-        return response()->json($mixin, 200);
-    }
-
     /**
      * Store a newly created resource in storage.
      * @param Request $request

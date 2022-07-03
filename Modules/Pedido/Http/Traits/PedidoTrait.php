@@ -51,6 +51,7 @@ trait PedidoTrait
         foreach ($dados_itens as $item) {
             $new_item = $this->saveItem($item);
             $itens[] = $new_item->id;
+            $this->removeEstoque($item['id_produto'], $item);
             $valor_final += $new_item->valor_total;
         }
 

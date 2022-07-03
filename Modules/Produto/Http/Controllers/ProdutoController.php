@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Modules\Produto\Entities\Categoria;
 use Modules\Produto\Entities\Produto;
 use Modules\Produto\Http\Requests\ProdutoRequest;
 use Modules\Produto\Http\Traits\ProdutoTrait;
@@ -28,6 +29,14 @@ class ProdutoController extends Controller
         // return response()->json(ProdutoResource::collection($produtos));
         $produtos = ProdutoService::findProduto();
         return response()->json($produtos, 200);    
+    }
+
+
+    public function mixin()
+    {
+        $categorias = Categoria::all();
+        $mixin = ['categorias' => $categorias];
+        return response()->json($mixin, 200);
     }
 
     /**
